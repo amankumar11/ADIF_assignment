@@ -1,14 +1,24 @@
 import React from 'react';
-import FeatureCard from './FeatureCard';
 
 const Dashboard = ({ features }) => (
   <div className="dashboard">
     <h2>Predicted Features</h2>
-    <div className="feature-list">
-      {features.map((feature, idx) => (
-        <FeatureCard key={idx} feature={feature} />
-      ))}
-    </div>
+    <table className="feature-table">
+      <thead>
+        <tr>
+          <th style={{color: "black"}}>Feature</th>
+          <th style={{color: "black"}}>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {features.map((feature, idx) => (
+          <tr key={idx}>
+            <td>{feature.name || feature.feature || 'N/A'}</td>
+            <td>{feature.value !== undefined ? feature.value : 'N/A'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
 );
 
