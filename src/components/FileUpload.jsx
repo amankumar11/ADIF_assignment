@@ -1,28 +1,18 @@
 import React, { useRef } from 'react';
+import { FaUpload } from 'react-icons/fa';
 
-const FileUpload = ({ onUpload, disabled }) => {
-  const fileInputRef = useRef();
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      onUpload(e.target.files[0]);
-    }
-  };
-
-  return (
-    <div className="file-upload">
-      <input
-        type="file"
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-        disabled={disabled}
-      />
-      <button onClick={() => fileInputRef.current.click()} disabled={disabled}>
-        Upload File
-      </button>
-    </div>
-  );
-};
+const FileUpload = ({ onUpload, disabled }) => (
+  <label className="file-upload-label">
+    <input
+      type="file"
+      accept="application/json"
+      onChange={e => onUpload(e.target.files[0])}
+      disabled={disabled}
+    />
+    <span className="file-upload-btn">
+      <FaUpload style={{ marginRight: 8 }} /> Upload JSON
+    </span>
+  </label>
+);
 
 export default FileUpload; 

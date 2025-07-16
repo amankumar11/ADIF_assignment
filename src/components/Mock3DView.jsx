@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { FaTooth } from 'react-icons/fa';
 
 // Tooth type and order for one jaw (left to right):
 const TOOTH_LAYOUT = [
@@ -275,6 +276,30 @@ function FrontCamera() {
   return null;
 }
 
+const Legend = () => (
+  <div style={{
+    display: 'flex',
+    gap: 24,
+    marginTop: 18,
+    alignItems: 'center',
+    background: 'rgba(24,28,32,0.85)',
+    borderRadius: 8,
+    padding: '10px 18px',
+    boxShadow: '0 2px 8px rgba(0,188,212,0.08)',
+    border: '1.5px solid var(--accent2)',
+    width: 'fit-content',
+  }}>
+    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <span style={{ width: 18, height: 18, background: '#e53935', borderRadius: '50%', display: 'inline-block', border: '2px solid #fff' }}></span>
+      <span style={{ color: '#fff' }}>Cavity</span>
+    </span>
+    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <span style={{ width: 18, height: 18, background: '#43a047', borderRadius: '50%', display: 'inline-block', border: '2px solid #fff' }}></span>
+      <span style={{ color: '#fff' }}>Cavity-free</span>
+    </span>
+  </div>
+);
+
 const Mock3DView = ({ features }) => {
   const highlightedTeeth = useMemo(
     () => getHighlightedTeeth(features),
@@ -307,24 +332,32 @@ const Mock3DView = ({ features }) => {
 
   return (
     <div
-      className="mock-3d-container"
+      className="mock-3d-container glassy-panel"
       ref={containerRef}
-      style={{ position: "relative" }}
+      style={{ position: "relative", overflow: 'hidden' }}
     >
-      <h2>Mock 3D Human Mouth (Front View)</h2>
+      {/* Watermark */}
+      {/* <FaTooth size={180} style={{
+        position: 'absolute',
+        right: 20,
+        bottom: 10,
+        color: 'rgba(0,188,212,0.07)',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }} /> */}
+      <h2 style={{ position: 'relative', zIndex: 1 }}>Mock 3D human mouth</h2>
       <Canvas
-        style={{ height: 500, background: "#222", borderRadius: 16 }}
+        style={{ height: 500, background: "#222", borderRadius: 16, position: 'relative', zIndex: 1 }}
         camera={{ fov: 50 }}
       >
         <FrontCamera />
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 20, 5]} intensity={0.7} />
         <JawScene
-          highlightedTeeth={highlightedTeeth}
+          features={features}
           onToothHover={handleToothHover}
           onToothUnhover={handleToothUnhover}
           onToothClick={handleToothClick}
-          features={features}
         />
         <OrbitControls
           enablePan={true}
@@ -340,7 +373,8 @@ const Mock3DView = ({ features }) => {
         onClose={handleModalClose}
         toothInfo={modal.toothInfo}
       />
-      <div style={{ color: "#fff", marginTop: 8 }}>
+      <Legend />
+      <div style={{ color: "#fff", marginTop: 8, position: 'relative', zIndex: 1 }}>
         <small>
           Red: Cavity, Green: Cavity-free. Hover or click a tooth for more info.
         </small>
