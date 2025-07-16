@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { FaTooth } from 'react-icons/fa';
+import { FaTooth } from "react-icons/fa";
 
 // Tooth type and order for one jaw (left to right):
 const TOOTH_LAYOUT = [
@@ -46,7 +46,7 @@ const getToothValue = (features, id) => {
 const getFDIValueMap = (features) => {
   const map = {};
   if (!features) return map;
-  features.forEach(f => {
+  features.forEach((f) => {
     map[f.name] = f.value;
   });
   return map;
@@ -131,9 +131,15 @@ function JawArc({
     const rotY = Math.atan2(-x, -dz);
     let fdi;
     if (isUpper) {
-      fdi = i < n / 2 ? String(1) + String(8 - i) : String(2) + String(i - n / 2 + 1);
+      fdi =
+        i < n / 2
+          ? String(1) + String(8 - i)
+          : String(2) + String(i - n / 2 + 1);
     } else {
-      fdi = i < n / 2 ? String(4) + String(8 - i) : String(3) + String(i - n / 2 + 1);
+      fdi =
+        i < n / 2
+          ? String(4) + String(8 - i)
+          : String(3) + String(i - n / 2 + 1);
     }
     const type = getToothType(TOOTH_LAYOUT[i]);
     let color = "#fff";
@@ -277,25 +283,45 @@ function FrontCamera() {
 }
 
 const Legend = () => (
-  <div style={{
-    display: 'flex',
-    gap: 24,
-    marginTop: 18,
-    alignItems: 'center',
-    background: 'rgba(24,28,32,0.85)',
-    borderRadius: 8,
-    padding: '10px 18px',
-    boxShadow: '0 2px 8px rgba(0,188,212,0.08)',
-    border: '1.5px solid var(--accent2)',
-    width: 'fit-content',
-  }}>
-    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <span style={{ width: 18, height: 18, background: '#e53935', borderRadius: '50%', display: 'inline-block', border: '2px solid #fff' }}></span>
-      <span style={{ color: '#fff' }}>Cavity</span>
+  <div
+    style={{
+      display: "flex",
+      gap: 24,
+      marginTop: 18,
+      alignItems: "center",
+      background: "rgba(24,28,32,0.85)",
+      borderRadius: 8,
+      padding: "10px 18px",
+      boxShadow: "0 2px 8px rgba(0,188,212,0.08)",
+      border: "1.5px solid var(--accent2)",
+      width: "fit-content",
+    }}
+  >
+    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <span
+        style={{
+          width: 18,
+          height: 18,
+          background: "#e53935",
+          borderRadius: "50%",
+          display: "inline-block",
+          border: "2px solid #fff",
+        }}
+      ></span>
+      <span style={{ color: "#fff" }}>Cavity</span>
     </span>
-    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <span style={{ width: 18, height: 18, background: '#43a047', borderRadius: '50%', display: 'inline-block', border: '2px solid #fff' }}></span>
-      <span style={{ color: '#fff' }}>Cavity-free</span>
+    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <span
+        style={{
+          width: 18,
+          height: 18,
+          background: "#43a047",
+          borderRadius: "50%",
+          display: "inline-block",
+          border: "2px solid #fff",
+        }}
+      ></span>
+      <span style={{ color: "#fff" }}>Cavity-free</span>
     </span>
   </div>
 );
@@ -334,7 +360,7 @@ const Mock3DView = ({ features }) => {
     <div
       className="mock-3d-container glassy-panel"
       ref={containerRef}
-      style={{ position: "relative", overflow: 'hidden' }}
+      style={{ position: "relative", overflow: "hidden" }}
     >
       {/* Watermark */}
       {/* <FaTooth size={180} style={{
@@ -345,9 +371,15 @@ const Mock3DView = ({ features }) => {
         zIndex: 0,
         pointerEvents: 'none',
       }} /> */}
-      <h2 style={{ position: 'relative', zIndex: 1 }}>Mock 3D human mouth</h2>
+      <h2 style={{ position: "relative", zIndex: 1 }}>Mock 3D human mouth</h2>
       <Canvas
-        style={{ height: 500, background: "#222", borderRadius: 16, position: 'relative', zIndex: 1 }}
+        style={{
+          height: 500,
+          background: "#222",
+          borderRadius: 16,
+          position: "relative",
+          zIndex: 1,
+        }}
         camera={{ fov: 50 }}
       >
         <FrontCamera />
@@ -374,7 +406,9 @@ const Mock3DView = ({ features }) => {
         toothInfo={modal.toothInfo}
       />
       <Legend />
-      <div style={{ color: "#fff", marginTop: 8, position: 'relative', zIndex: 1 }}>
+      <div
+        style={{ color: "#fff", marginTop: 8, position: "relative", zIndex: 1 }}
+      >
         <small>
           Red: Cavity, Green: Cavity-free. Hover or click a tooth for more info.
         </small>

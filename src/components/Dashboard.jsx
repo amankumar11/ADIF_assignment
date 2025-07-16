@@ -1,5 +1,5 @@
-import React from 'react';
-import { FaTooth } from 'react-icons/fa';
+import React from "react";
+import { FaTooth } from "react-icons/fa";
 
 const Dashboard = ({ features }) => (
   <div className="dashboard">
@@ -14,17 +14,33 @@ const Dashboard = ({ features }) => (
       <tbody>
         {features.map((feature, idx) => (
           <tr key={idx}>
-            <td>{feature.name || feature.feature || 'N/A'}</td>
+            <td>{feature.name || feature.feature || "N/A"}</td>
             <td>
               {feature.value === 1 ? (
-                <span style={{ color: '#e53935', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span
+                  style={{
+                    color: "#e53935",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
                   <FaTooth /> Cavity
                 </span>
               ) : feature.value === 0 ? (
-                <span style={{ color: '#43a047', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span
+                  style={{
+                    color: "#43a047",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
                   <FaTooth /> Healthy
                 </span>
-              ) : 'N/A'}
+              ) : (
+                "N/A"
+              )}
             </td>
           </tr>
         ))}
@@ -33,4 +49,4 @@ const Dashboard = ({ features }) => (
   </div>
 );
 
-export default Dashboard; 
+export default Dashboard;

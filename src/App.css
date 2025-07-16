@@ -278,7 +278,6 @@ pre, textarea {
   border-left: 5px solid var(--accent2);
 }
 .toast {
-  filter: drop-shadow(0 2px 8px #00bcd4cc);
   border-width: 2px;
 }
 

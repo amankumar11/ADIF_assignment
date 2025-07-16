@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-const Toast = ({ message, type = 'info', onClose }) => {
+const Toast = ({ message, type = "info", onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -8,18 +8,17 @@ const Toast = ({ message, type = 'info', onClose }) => {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  let borderColor = 'var(--accent)';
-  if (type === 'success') borderColor = 'var(--success)';
-  if (type === 'error') borderColor = 'var(--danger)';
+  let borderColor = "var(--accent)";
+  if (type === "success") borderColor = "var(--success)";
+  if (type === "error") borderColor = "var(--danger)";
 
   return (
     <div
       className="toast"
       style={{
         borderColor,
-        boxShadow: 'var(--shadow)',
-        background: '#23272f',
-        color: 'var(--text-main)',
+        background: "#23272f",
+        color: "var(--text-main)",
       }}
     >
       {message}
@@ -27,4 +26,4 @@ const Toast = ({ message, type = 'info', onClose }) => {
   );
 };
 
-export default Toast; 
+export default Toast;
