@@ -1,57 +1,75 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import React, { useMemo, useRef, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 // Tooth type and order for one jaw (left to right):
 const TOOTH_LAYOUT = [
-  'molar', 'molar', 'molar', // 3 molars
-  'premolar', 'premolar',   // 2 premolars
-  'canine',                 // 1 canine
-  'incisor', 'incisor',     // 2 lateral/central incisors (right)
-  'incisor', 'incisor',     // 2 lateral/central incisors (left)
-  'canine',                 // 1 canine
-  'premolar', 'premolar',   // 2 premolars
-  'molar', 'molar', 'molar'// 3 molars
+  "molar",
+  "molar",
+  "molar", // 3 molars
+  "premolar",
+  "premolar", // 2 premolars
+  "canine", // 1 canine
+  "incisor",
+  "incisor", // 2 lateral/central incisors (right)
+  "incisor",
+  "incisor", // 2 lateral/central incisors (left)
+  "canine", // 1 canine
+  "premolar",
+  "premolar", // 2 premolars
+  "molar",
+  "molar",
+  "molar", // 3 molars
 ];
 
 const TOOTH_TYPE_MAP = {
-  incisor: 'Incisor',
-  canine: 'Canine',
-  premolar: 'Premolar',
-  molar: 'Molar',
+  incisor: "Incisor",
+  canine: "Canine",
+  premolar: "Premolar",
+  molar: "Molar",
 };
 
-const getToothType = (type) => TOOTH_TYPE_MAP[type] || 'Unknown';
+const getToothType = (type) => TOOTH_TYPE_MAP[type] || "Unknown";
 
 const getHighlightedTeeth = (features) => {
   if (!features) return [];
-  return features.map(f => f.name);
+  return features.map((f) => f.name);
 };
 
 const getToothValue = (features, id) => {
   if (!features) return undefined;
-  const found = features.find(f => f.name === id);
+  const found = features.find((f) => f.name === id);
   return found ? found.value : undefined;
 };
 
-function Tooth({ position, rotation, highlighted, id, type, onHover, onUnhover, onClick, isUpper }) {
+function Tooth({
+  position,
+  rotation,
+  highlighted,
+  id,
+  type,
+  onHover,
+  onUnhover,
+  onClick,
+  isUpper,
+}) {
   let geometry = null;
   let meshRotation = [...rotation];
   switch (type) {
-    case 'Incisor':
+    case "Incisor":
       geometry = <boxGeometry args={[0.32, 1.0, 0.32]} />;
       break;
-    case 'Canine':
+    case "Canine":
       geometry = <coneGeometry args={[0.22, 1.1, 16]} />;
       // Invert cone for upper jaw (point down)
       if (isUpper) {
         meshRotation[0] += Math.PI; // flip around X axis
       }
       break;
-    case 'Premolar':
+    case "Premolar":
       geometry = <cylinderGeometry args={[0.32, 0.38, 0.8, 16]} />;
       break;
-    case 'Molar':
+    case "Molar":
       geometry = <cylinderGeometry args={[0.45, 0.55, 0.7, 16]} />;
       break;
     default:
@@ -61,14 +79,23 @@ function Tooth({ position, rotation, highlighted, id, type, onHover, onUnhover, 
     <mesh
       position={position}
       rotation={meshRotation}
-      onPointerOver={e => { e.stopPropagation(); onHover(id, type, e); }}
-      onPointerOut={e => { e.stopPropagation(); onUnhover(); }}
-      onClick={e => { e.stopPropagation(); onClick(id, type, e); }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        onHover(id, type, e);
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation();
+        onUnhover();
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(id, type, e);
+      }}
       castShadow
       receiveShadow
     >
       {geometry}
-      <meshStandardMaterial color={highlighted ? '#ffeb3b' : '#fff'} />
+      <meshStandardMaterial color={highlighted ? "#ffeb3b" : "#fff"} />
     </mesh>
   );
 }
@@ -82,7 +109,7 @@ function JawArc({
   onToothUnhover,
   onToothClick,
   features,
-  fdiStart
+  fdiStart,
 }) {
   // Arrange teeth in a realistic arch (ellipse)
   const a = 6.5; // width
@@ -99,13 +126,15 @@ function JawArc({
     // FDI numbering: upper right 18..11, upper left 21..28, lower left 38..31, lower right 41..48
     let fdi;
     if (isUpper) {
-      fdi = (i < n / 2)
-        ? String(1) + String(8 - i) // 18..11
-        : String(2) + String(i - 6); // 21..28
+      fdi =
+        i < n / 2
+          ? String(1) + String(8 - i) // Upper Right: 18 to 11
+          : String(2) + String(i - n / 2 + 1); // Upper Left: 21 to 28
     } else {
-      fdi = (i < n / 2)
-        ? String(3) + String(8 - i) // 38..31
-        : String(4) + String(i - 6); // 41..48
+      fdi =
+        i < n / 2
+          ? String(4) + String(8 - i) // Lower Right: 48 to 41
+          : String(3) + String(i - n / 2 + 1); // Lower Left: 31 to 38
     }
     const type = getToothType(TOOTH_LAYOUT[i]);
     teeth.push(
@@ -126,7 +155,13 @@ function JawArc({
   return <>{teeth}</>;
 }
 
-function JawScene({ highlightedTeeth, onToothHover, onToothUnhover, onToothClick, features }) {
+function JawScene({
+  highlightedTeeth,
+  onToothHover,
+  onToothUnhover,
+  onToothClick,
+  features,
+}) {
   return (
     <>
       {/* Upper jaw (y=1.2, z=0) */}
@@ -151,7 +186,6 @@ function JawScene({ highlightedTeeth, onToothHover, onToothUnhover, onToothClick
         onToothClick={onToothClick}
         features={features}
       />
-      {/* Removed ground plane and shadow */}
     </>
   );
 }
@@ -161,17 +195,17 @@ const Tooltip = ({ visible, x, y, text }) => {
   return (
     <div
       style={{
-        position: 'fixed',
+        position: "fixed",
         left: x + 12,
         top: y + 12,
-        background: 'rgba(30,30,30,0.95)',
-        color: '#fff',
-        padding: '6px 12px',
+        background: "rgba(30,30,30,0.95)",
+        color: "#fff",
+        padding: "6px 12px",
         borderRadius: 6,
-        pointerEvents: 'none',
+        pointerEvents: "none",
         zIndex: 1000,
         fontSize: 14,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
       }}
     >
       {text}
@@ -182,29 +216,48 @@ const Tooltip = ({ visible, x, y, text }) => {
 const Modal = ({ open, onClose, toothInfo }) => {
   if (!open) return null;
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(0,0,0,0.3)',
-      zIndex: 2000,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }} onClick={onClose}>
-      <div style={{
-        background: '#fff',
-        color: '#222',
-        borderRadius: 10,
-        padding: 24,
-        minWidth: 260,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
-        position: 'relative',
-      }} onClick={e => e.stopPropagation()}>
-        <h3 style={{marginTop:0}}>Tooth Info</h3>
-        <div><b>FDI Number:</b> {toothInfo.id}</div>
-        <div><b>Type:</b> {toothInfo.type}</div>
-        {toothInfo.value !== undefined && <div><b>Value:</b> {toothInfo.value}</div>}
-        <button style={{marginTop:16}} onClick={onClose}>Close</button>
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "rgba(0,0,0,0.3)",
+        zIndex: 2000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: "#fff",
+          color: "#222",
+          borderRadius: 10,
+          padding: 24,
+          minWidth: 260,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+          position: "relative",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 style={{ marginTop: 0 }}>Tooth Info</h3>
+        <div>
+          <b>FDI Number:</b> {toothInfo.id}
+        </div>
+        <div>
+          <b>Type:</b> {toothInfo.type}
+        </div>
+        {toothInfo.value !== undefined && (
+          <div>
+            <b>Value:</b> {toothInfo.value}
+          </div>
+        )}
+        <button style={{ marginTop: 16 }} onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );
@@ -222,8 +275,16 @@ function FrontCamera() {
 }
 
 const Mock3DView = ({ features }) => {
-  const highlightedTeeth = useMemo(() => getHighlightedTeeth(features), [features]);
-  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, text: '' });
+  const highlightedTeeth = useMemo(
+    () => getHighlightedTeeth(features),
+    [features]
+  );
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    text: "",
+  });
   const [modal, setModal] = useState({ open: false, toothInfo: {} });
   const containerRef = useRef();
 
@@ -235,7 +296,8 @@ const Mock3DView = ({ features }) => {
       text: `${id}: ${type}`,
     });
   };
-  const handleToothUnhover = () => setTooltip(t => ({ ...t, visible: false }));
+  const handleToothUnhover = () =>
+    setTooltip((t) => ({ ...t, visible: false }));
   const handleToothClick = (id, type, e) => {
     const value = getToothValue(features, id);
     setModal({ open: true, toothInfo: { id, type, value } });
@@ -243,22 +305,48 @@ const Mock3DView = ({ features }) => {
   const handleModalClose = () => setModal({ open: false, toothInfo: {} });
 
   return (
-    <div className="mock-3d-container" ref={containerRef} style={{ position: 'relative' }}>
+    <div
+      className="mock-3d-container"
+      ref={containerRef}
+      style={{ position: "relative" }}
+    >
       <h2>Mock 3D Human Mouth (Front View)</h2>
-      <Canvas style={{ height: 500, background: '#222', borderRadius: 16 }} camera={{ fov: 50 }}>
+      <Canvas
+        style={{ height: 500, background: "#222", borderRadius: 16 }}
+        camera={{ fov: 50 }}
+      >
         <FrontCamera />
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 20, 5]} intensity={0.7} />
-        <JawScene highlightedTeeth={highlightedTeeth} onToothHover={handleToothHover} onToothUnhover={handleToothUnhover} onToothClick={handleToothClick} features={features} />
-        <OrbitControls enablePan={true} enableRotate={true} enableZoom={true} minDistance={3} maxDistance={20} />
+        <JawScene
+          highlightedTeeth={highlightedTeeth}
+          onToothHover={handleToothHover}
+          onToothUnhover={handleToothUnhover}
+          onToothClick={handleToothClick}
+          features={features}
+        />
+        <OrbitControls
+          enablePan={true}
+          enableRotate={true}
+          enableZoom={true}
+          minDistance={3}
+          maxDistance={20}
+        />
       </Canvas>
       <Tooltip {...tooltip} />
-      <Modal open={modal.open} onClose={handleModalClose} toothInfo={modal.toothInfo} />
-      <div style={{ color: '#fff', marginTop: 8 }}>
-        <small>Highlighted teeth are present in the uploaded JSON. Hover or click a tooth for more info.</small>
+      <Modal
+        open={modal.open}
+        onClose={handleModalClose}
+        toothInfo={modal.toothInfo}
+      />
+      <div style={{ color: "#fff", marginTop: 8 }}>
+        <small>
+          Highlighted teeth are present in the uploaded JSON. Hover or click a
+          tooth for more info.
+        </small>
       </div>
     </div>
   );
 };
 
-export default Mock3DView; 
+export default Mock3DView;
