@@ -42,10 +42,19 @@ const getToothValue = (features, id) => {
   return found ? found.value : undefined;
 };
 
+const getFDIValueMap = (features) => {
+  const map = {};
+  if (!features) return map;
+  features.forEach(f => {
+    map[f.name] = f.value;
+  });
+  return map;
+};
+
 function Tooth({
   position,
   rotation,
-  highlighted,
+  color,
   id,
   type,
   onHover,
@@ -61,9 +70,8 @@ function Tooth({
       break;
     case "Canine":
       geometry = <coneGeometry args={[0.22, 1.1, 16]} />;
-      // Invert cone for upper jaw (point down)
       if (isUpper) {
-        meshRotation[0] += Math.PI; // flip around X axis
+        meshRotation[0] += Math.PI;
       }
       break;
     case "Premolar":
@@ -95,7 +103,7 @@ function Tooth({
       receiveShadow
     >
       {geometry}
-      <meshStandardMaterial color={highlighted ? "#ffeb3b" : "#fff"} />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
 }
@@ -104,39 +112,32 @@ function JawArc({
   y,
   z,
   isUpper,
-  highlightedTeeth,
+  features,
   onToothHover,
   onToothUnhover,
   onToothClick,
-  features,
-  fdiStart,
 }) {
-  // Arrange teeth in a realistic arch (ellipse)
-  const a = 6.5; // width
-  const b = 4.2; // depth
+  const a = 6.5;
+  const b = 4.2;
   const teeth = [];
   const n = TOOTH_LAYOUT.length;
+  const fdiMap = getFDIValueMap(features);
   for (let i = 0; i < n; i++) {
-    const angle = Math.PI * (i / (n - 1)) - Math.PI / 2; // -PI/2 to PI/2
+    const angle = Math.PI * (i / (n - 1)) - Math.PI / 2;
     const x = a * Math.sin(angle);
     const dz = b * Math.cos(angle);
     const pos = [x, y, z + dz];
-    // Each tooth faces the center (0, y, z)
     const rotY = Math.atan2(-x, -dz);
-    // FDI numbering: upper right 18..11, upper left 21..28, lower left 38..31, lower right 41..48
     let fdi;
     if (isUpper) {
-      fdi =
-        i < n / 2
-          ? String(1) + String(8 - i) // Upper Right: 18 to 11
-          : String(2) + String(i - n / 2 + 1); // Upper Left: 21 to 28
+      fdi = i < n / 2 ? String(1) + String(8 - i) : String(2) + String(i - n / 2 + 1);
     } else {
-      fdi =
-        i < n / 2
-          ? String(4) + String(8 - i) // Lower Right: 48 to 41
-          : String(3) + String(i - n / 2 + 1); // Lower Left: 31 to 38
+      fdi = i < n / 2 ? String(4) + String(8 - i) : String(3) + String(i - n / 2 + 1);
     }
     const type = getToothType(TOOTH_LAYOUT[i]);
+    let color = "#fff";
+    if (fdiMap[fdi] === 1) color = "#e53935";
+    else if (fdiMap[fdi] === 0) color = "#43a047";
     teeth.push(
       <Tooth
         key={fdi}
@@ -144,7 +145,7 @@ function JawArc({
         type={type}
         position={pos}
         rotation={[0, rotY, 0]}
-        highlighted={highlightedTeeth.includes(fdi)}
+        color={color}
         onHover={onToothHover}
         onUnhover={onToothUnhover}
         onClick={onToothClick}
@@ -341,8 +342,7 @@ const Mock3DView = ({ features }) => {
       />
       <div style={{ color: "#fff", marginTop: 8 }}>
         <small>
-          Highlighted teeth are present in the uploaded JSON. Hover or click a
-          tooth for more info.
+          Red: Cavity, Green: Cavity-free. Hover or click a tooth for more info.
         </small>
       </div>
     </div>
