@@ -1,4 +1,5 @@
 # Feature prediction dashboard - Dental cavity
+Walkthrough video - https://drive.google.com/file/d/1g95MFtaVgtEZC7ilIavZCcuhStD-Xvb9/view?usp=sharing
 
 A web application for visualizing and predicting dental cavities using FDI tooth numbering. Upload a JSON file with tooth data, and view predictions in a 3D human mouth model and a feature dashboard.
 
