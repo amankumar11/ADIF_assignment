@@ -1,0 +1,30 @@
+runtime: nodejs20
+
+handlers:
+  # JavaScript modules (explicit MIME type)
+  - url: /(.*\.js)
+    static_files: dist/\1
+    upload: dist/.*\.js
+    mime_type: text/javascript
+    secure: always
+
+  # CSS
+  - url: /(.*\.css)
+    static_files: dist/\1
+    upload: dist/.*\.css
+    mime_type: text/css
+    secure: always
+
+  # Images and fonts
+  - url: /(.*\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map))
+    static_files: dist/\1
+    upload: dist/.*\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)
+    mime_type: auto
+    secure: always
+
+  # Serve index.html for all other routes (SPA)
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
+    mime_type: text/html
+    secure: always

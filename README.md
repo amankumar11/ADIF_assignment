@@ -88,7 +88,89 @@ A web application for visualizing and predicting dental cavities using FDI tooth
 }
 ```
 
+## Updated Directory structure
+
+### Pages:
+- `src/pages/Home.jsx` - Landing page with file upload and instructions
+- `src/pages/Results.jsx` - Results page showing Dashboard and 3D View
+
+### Components:
+- `src/components/Layout.jsx` - Consistent header and layout wrapper
+- Updated `src/components/FileUpload.jsx` - More modular with better error handling
+
+### 3D Components (src/components/3D/):
+- `Tooth.jsx` - Individual tooth rendering with geometry and interactions
+- `JawArc.jsx` - Tooth arrangement in an arc (upper/lower jaw)
+- `JawScene.jsx` - Complete jaw scene with gums and teeth
+- `FrontCamera.jsx` - Camera positioning and setup
+- `Tooltip.jsx` - Hover tooltip for tooth information
+- `Legend.jsx` - Color legend for cavity/healthy teeth
+
+### Updated Main Component:
+- `Mock3DView.jsx` - Now much cleaner, focusing only on: State management (tooltip, modal), Event handlers, Canvas setup, Component composition
+
+### Routing:
+- `src/App.jsx` - Now uses React Router for navigation between pages
+
+### Updated frontend directory structure
+
+```src/
+src/
+├── App.jsx
+├── App.css
+├── index.js / main.jsx
+├── components/
+│   ├── Layout.jsx
+│   ├── Toast.jsx
+│   ├── FileUpload.jsx
+│   ├── Dashboard.jsx
+│   ├── ToothModal.jsx
+│   └── 3D/
+│       ├── Mock3DView.jsx
+│       ├── Tooth.jsx
+│       ├── Gums.jsx
+│       ├── JawArc.jsx
+│       ├── JawScene.jsx
+│       ├── FrontCamera.jsx
+│       ├── Tooltip.jsx
+│       └── Legend.jsx
+├── pages/
+│   ├── Home.jsx
+│   └── Results.jsx
+└── 
+```
+
 ---
+
+## 🚀 Deployment
+
+Deployments are done using GCP. Both frontend and backend are deployed on VM Instances.
+
+### Frontend
+- Name: adif-frontend-instance-20250727-134055
+- Boot disk source image: debian-12-bookworm-v20250709
+- Location: us-east1-d
+- Machine type: e2-micro (2 vCPUs, 1 GB Memory)
+- Firewall: `http: ON`, `https: ON`
+
+### Backend
+- Name: instance-20250727-083643
+- Boot disk source image: debian-12-bookworm-v20250709
+- Location: us-central1-c
+- Machine type: e2-micro (2 vCPUs, 1 GB Memory)
+- Firewall: `http: ON`, `https: ON`
+
+### Frontend HTTPS deployment
+- Stored `dist/build` file in google cloud bucket, along with the `app.yaml` file.
+- Deployed using Google cloud shell
+- As it spits out a https URL, was not able to hit the flask http URL served by a VM. To enable it we need to buy a domain and SSL certificate for flask app to be served on https from VM instance.
+
+### Deployed URLs
+- Frontend is deployed on - http://34.138.14.65/ 
+- Backend is deployed on - http://35.239.120.131/upload
+- Frontend HTTPS URL (Won't be able to hit BE API because of `Mixed Content blocking`) - https://secure-pottery-467208-k0.appspot.com/
+
+Note - Both are http and not https, I have also deployed frontend (react app) on https using 
 
 ## 📬 Contact
 For support or questions, email: ak12378@nyu.edu
