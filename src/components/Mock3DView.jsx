@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaTooth } from "react-icons/fa";
+import ToothModal from "./ToothModal";
 
 // Tooth type and order for one jaw (left to right):
 const TOOTH_LAYOUT = [
@@ -221,56 +222,6 @@ const Tooltip = ({ visible, x, y, text }) => {
   );
 };
 
-const Modal = ({ open, onClose, toothInfo }) => {
-  if (!open) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0,0,0,0.3)",
-        zIndex: 2000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          background: "#fff",
-          color: "#222",
-          borderRadius: 10,
-          padding: 24,
-          minWidth: 260,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
-          position: "relative",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 style={{ marginTop: 0 }}>Tooth Info</h3>
-        <div>
-          <b>FDI Number:</b> {toothInfo.id}
-        </div>
-        <div>
-          <b>Type:</b> {toothInfo.type}
-        </div>
-        {toothInfo.value !== undefined && (
-          <div>
-            <b>Value:</b> {toothInfo.value}
-          </div>
-        )}
-        <button style={{ marginTop: 16 }} onClick={onClose}>
-          Close
-        </button>
-      </div>
-    </div>
-  );
-};
-
 function FrontCamera() {
   const { camera } = useThree();
   React.useEffect(() => {
@@ -362,15 +313,6 @@ const Mock3DView = ({ features }) => {
       ref={containerRef}
       style={{ position: "relative", overflow: "hidden" }}
     >
-      {/* Watermark */}
-      {/* <FaTooth size={180} style={{
-        position: 'absolute',
-        right: 20,
-        bottom: 10,
-        color: 'rgba(0,188,212,0.07)',
-        zIndex: 0,
-        pointerEvents: 'none',
-      }} /> */}
       <h2 style={{ position: "relative", zIndex: 1 }}>Mock 3D human mouth</h2>
       <Canvas
         style={{
@@ -400,7 +342,7 @@ const Mock3DView = ({ features }) => {
         />
       </Canvas>
       <Tooltip {...tooltip} />
-      <Modal
+      <ToothModal
         open={modal.open}
         onClose={handleModalClose}
         toothInfo={modal.toothInfo}

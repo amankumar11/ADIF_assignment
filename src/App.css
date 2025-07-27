@@ -65,10 +65,11 @@
   margin: 18px 0;
   width: 93% !important;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-.dashboard, .mock-3d-container {
+.dashboard,
+.mock-3d-container {
   width: 93% !important;
 }
 
@@ -82,12 +83,14 @@
   --text-main: #f5f7fa;
   --text-secondary: #b0bec5;
   --border: #2c313a;
-  --shadow: 0 4px 24px rgba(0,0,0,0.18);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
   --radius: 14px;
-  --font-main: 'Inter', 'Roboto', 'Open Sans', Arial, sans-serif;
+  --font-main: "Inter", "Roboto", "Open Sans", Arial, sans-serif;
 }
 
-body, #root, .app-container {
+body,
+#root,
+.app-container {
   background: var(--app-bg);
   color: var(--text-main);
   font-family: var(--font-main);
@@ -105,7 +108,10 @@ body, #root, .app-container {
   align-items: center;
 }
 
-.card, .input-info-box, .dashboard, .mock-3d-container {
+.card,
+.input-info-box,
+.dashboard,
+.mock-3d-container {
   background: var(--card-bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -118,7 +124,9 @@ body, #root, .app-container {
   position: relative;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--accent);
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -139,7 +147,8 @@ h3 {
   margin-bottom: 0.5em;
 }
 
-button, .file-upload-btn {
+button,
+.file-upload-btn {
   background: var(--accent2);
   color: #fff;
   border: none;
@@ -150,16 +159,17 @@ button, .file-upload-btn {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin: 0.3em 0.2em;
   outline: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
 }
-button:hover, .file-upload-btn:hover {
+button:hover,
+.file-upload-btn:hover {
   background: var(--accent);
-  box-shadow: 0 4px 16px rgba(0,188,212,0.12);
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.12);
 }
 
 input[type="file"] {
@@ -181,16 +191,17 @@ input[type="file"] {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin: 0.3em 0.2em;
   outline: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
 }
-.file-upload-btn:hover, .file-upload-btn:focus {
+.file-upload-btn:hover,
+.file-upload-btn:focus {
   background: var(--accent);
-  box-shadow: 0 4px 16px rgba(0,188,212,0.12);
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.12);
   transform: translateY(-2px) scale(1.03);
 }
 .file-upload-btn:active {
@@ -209,17 +220,19 @@ input[type="file"] {
   align-items: center;
   justify-content: center;
 }
-.icon-btn:hover, .icon-btn:focus {
+.icon-btn:hover,
+.icon-btn:focus {
   background: var(--accent2);
   color: #fff;
 }
 
-pre, textarea {
+pre,
+textarea {
   background: #11151a;
   color: var(--text-main);
   border-radius: 8px;
   border: 1px solid var(--border);
-  font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+  font-family: "Fira Mono", "Consolas", "Menlo", monospace;
   font-size: 1em;
 }
 
@@ -268,7 +281,7 @@ pre, textarea {
 
 .glassy-panel {
   /* background: linear-gradient(120deg, rgba(35,39,47,0.97) 80%, rgba(0,188,212,0.08) 100%); */
-  box-shadow: 0 8px 32px 0 rgba(0,188,212,0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 188, 212, 0.12);
   border: 1.5px solid var(--accent2);
   position: relative;
   overflow: hidden;
@@ -306,12 +319,24 @@ pre, textarea {
   animation: fadein 0.3s, fadeout 0.3s 2.7s;
 }
 @keyframes fadein {
-  from { opacity: 0; right: 0; }
-  to { opacity: 0.97; right: 32px; }
+  from {
+    opacity: 0;
+    right: 0;
+  }
+  to {
+    opacity: 0.97;
+    right: 32px;
+  }
 }
 @keyframes fadeout {
-  from { opacity: 0.97; right: 32px; }
-  to { opacity: 0; right: 0; }
+  from {
+    opacity: 0.97;
+    right: 32px;
+  }
+  to {
+    opacity: 0;
+    right: 0;
+  }
 }
 
 .app-header {
@@ -324,7 +349,7 @@ pre, textarea {
   gap: 16px;
   padding: 18px 32px 18px 24px;
   border-bottom: 2.5px solid var(--accent);
-  box-shadow: 0 2px 12px rgba(0,188,212,0.08);
+  box-shadow: 0 2px 12px rgba(0, 188, 212, 0.08);
   min-height: 64px;
 }
 .app-title {
@@ -348,6 +373,84 @@ pre, textarea {
   transition: box-shadow 0.2s, border 0.2s;
 }
 .card:hover {
-  box-shadow: 0 6px 32px rgba(0,188,212,0.13);
+  box-shadow: 0 6px 32px rgba(0, 188, 212, 0.13);
   border: 1.5px solid var(--accent2);
+}
+
+.file-upload-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.file-upload-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.file-upload-btn.disabled:hover {
+  background: var(--accent2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: none;
+}
+
+/* Navigation buttons */
+.nav-button {
+  background: var(--border);
+  color: var(--text-main);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.nav-button:hover {
+  background: var(--accent2);
+  color: white;
+}
+
+.action-button {
+  background: var(--accent2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.action-button:hover {
+  background: var(--accent);
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
 }
