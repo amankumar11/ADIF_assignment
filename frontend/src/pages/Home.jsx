@@ -28,7 +28,7 @@ const Home = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     try {
-      const response = await fetch("http://127.0.0.1:5000/upload", {
+      const response = await fetch("http://35.239.120.131/upload", {
         method: "POST",
         body: formData,
       });
